@@ -1,3 +1,15 @@
 .venv/
 books/
 .DS_Store
+
+# Generated audio and temporary audio chunks
+Audio/
+*.mp3
+*.wav
+*.m4a
+*.aac
+*.flac
+*.ogg
+
+# Runtime logs
+*.log
