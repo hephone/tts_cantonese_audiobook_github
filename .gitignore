@@ -1,6 +1,8 @@
+.env
 .venv/
 books/
 .DS_Store
+node_modules/
 
 # Generated audio and temporary audio chunks
 Audio/
@@ -13,3 +15,21 @@ Audio/
 
 # Runtime logs
 *.log
+
+# Generated playlists and temporary files
+*.m3u
+*.tmp
+*.part
+
+# Python caches and test artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local environment overrides
+.env.local
+.env.*.local
