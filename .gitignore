@@ -1,6 +1,7 @@
 .env
 .venv/
 books/
+cantonese_audiobook_tts/
 .DS_Store
 node_modules/
 
