@@ -4,6 +4,7 @@ books/
 cantonese_audiobook_tts/
 .DS_Store
 node_modules/
+docs/
 
 # Generated audio and temporary audio chunks
 Audio/

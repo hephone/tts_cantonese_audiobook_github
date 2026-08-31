@@ -63,7 +63,7 @@ ffprobe -version
 建议将人工审核用的阅读稿保存到：
 
 ```text
-Book/Script/001-cantonese.md
+cantonese_audiobook_tts/<书名>/Script/001-cantonese.md
 ```
 
 质量检查有修改时，使用以下格式：
@@ -85,9 +85,9 @@ Book/Script/001-cantonese.md
 ```sh
 .venv/bin/python \
   .agents/skills/cantonese-audiobook-generator/scripts/normalize_cantonese_tts.py \
-  Book/Script/001-cantonese.md \
-  Book/TTS/001-edge.txt \
-  --book-dictionary Book/TTS/pronunciation-dictionary.tsv
+  cantonese_audiobook_tts/<书名>/Script/001-cantonese.md \
+  cantonese_audiobook_tts/<书名>/TTS/001-edge.txt \
+  --book-dictionary cantonese_audiobook_tts/<书名>/TTS/pronunciation-dictionary.tsv
 ```
 
 脚本会：
@@ -113,8 +113,8 @@ Book/Script/001-cantonese.md
 .venv/bin/python -m edge_tts \
   --voice zh-HK-WanLungNeural \
   --rate=+20% \
-  --file Book/TTS/001-edge.txt \
-  --write-media Book/Audio/001-章节标题.mp3
+  --file cantonese_audiobook_tts/<书名>/TTS/001-edge.txt \
+  --write-media cantonese_audiobook_tts/<书名>/Audio/001-章节标题.mp3
 ```
 
 当前固定批量入口为：
@@ -134,7 +134,7 @@ ffprobe -v error \
   -show_entries format=duration,size,bit_rate \
   -show_entries stream=codec_name,sample_rate,channels \
   -of default=noprint_wrappers=1 \
-  Book/Audio/001-章节标题.mp3
+  cantonese_audiobook_tts/<书名>/Audio/001-章节标题.mp3
 ```
 
 确认所有章节 MP3 都存在、非空且通过验证后，再在同一个 `Audio/` 目录生成 UTF-8 M3U 播放列表。列表只应包含最终章节音频，不要加入试听文件、临时分块或中间文件：
@@ -148,7 +148,7 @@ ffprobe -v error \
 ## 推荐输出结构
 
 ```text
-Book/
+cantonese_audiobook_tts/<书名>/
 ├── README.md
 ├── Script/
 │   ├── 001-cantonese.md
@@ -180,4 +180,3 @@ Book/
 - [`cantonese-tts-pronunciations.tsv`](.agents/skills/cantonese-audiobook-generator/references/cantonese-tts-pronunciations.tsv)：内置发音词典
 - [`requirements-tts.txt`](requirements-tts.txt)：Python 依赖
 - [`generate_cantonese_audiobook.sh`](generate_cantonese_audiobook.sh)：批量生成入口
-

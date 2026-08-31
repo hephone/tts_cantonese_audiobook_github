@@ -19,6 +19,7 @@ Turn written Mandarin non-fiction into a natural Hong Kong Cantonese knowledge-p
 
 Use the project's `.venv`. Do not install the tool into a temporary directory.
 Require `edge-tts` 7.2.8 in that environment and `ffprobe` for media verification.
+Store every book at `cantonese_audiobook_tts/<书名>/`; do not create audiobook outputs at the repository root.
 
 ## Workflow
 
@@ -135,9 +136,9 @@ Generate each TTS copy with:
 ```sh
 .venv/bin/python \
   .agents/skills/cantonese-audiobook-generator/scripts/normalize_cantonese_tts.py \
-  Book/Script/001-cantonese.md \
-  Book/TTS/001-edge.txt \
-  --book-dictionary Book/TTS/pronunciation-dictionary.tsv
+  cantonese_audiobook_tts/<书名>/Script/001-cantonese.md \
+  cantonese_audiobook_tts/<书名>/TTS/001-edge.txt \
+  --book-dictionary cantonese_audiobook_tts/<书名>/TTS/pronunciation-dictionary.tsv
 ```
 
 Do not overwrite files in `Script/`. Do not send raw SSML tags through the current `edge-tts` CLI: it escapes input text and does not expose `phoneme` or custom-lexicon options.
@@ -166,7 +167,7 @@ For individual files, use:
 .venv/bin/python -m edge_tts \
   --voice zh-HK-WanLungNeural \
   --rate=+20% \
-  --file Book/TTS/001-edge.txt \
+  --file cantonese_audiobook_tts/<书名>/TTS/001-edge.txt \
   --write-media OUTPUT
 ```
 
@@ -214,7 +215,7 @@ Example:
 Create:
 
 ```text
-Book/
+cantonese_audiobook_tts/<书名>/
 ├── README.md
 ├── Script/
 │   ├── 001-cantonese.md
@@ -229,7 +230,7 @@ Book/
     └── 书名.m3u
 ```
 
-Record the book title, source path, chapter list, voice, rate, audio durations, M3U playlist path, generation date, pronunciation dictionaries, replacement counts, unresolved pronunciations, and pronunciation notes in `Book/README.md`.
+Record the book title, source path, chapter list, voice, rate, audio durations, M3U playlist path, generation date, pronunciation dictionaries, replacement counts, unresolved pronunciations, and pronunciation notes in `cantonese_audiobook_tts/<书名>/README.md`.
 
 If the project already has an established output structure, keep it and document the mapping in its README.
 
