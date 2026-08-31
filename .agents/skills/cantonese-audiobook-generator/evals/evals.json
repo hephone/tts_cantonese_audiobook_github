@@ -36,6 +36,18 @@
       "prompt": "阅读稿里为方便审核写了‘真正聰明嘅人，從不走捷徑。/ 下一句繼續。’，也包含链接 https://example.com/naval。请保持 Script/ 阅读稿不变，生成 edge-tts 专用稿并合成。合成前要说明如何避免雲龍把斜线读出来；如果旧音频已经读出‘斜线’，应如何最小范围修复？",
       "expected_output": "Keeps Script/ unchanged, converts every literal slash in the TTS-only copy to natural punctuation, rewrites URL syntax into speakable text as needed, verifies the TTS file contains zero slash characters before synthesis, and regenerates only affected TTS copies and chapter MP3s if existing audio read slash marks aloud.",
       "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "阅读稿里有‘海龟、一齐食、不請自來’，请在合成前完成繁体与粤语质量检查。固定成语不应逐字口语化；如果文本仍含可转换简体，应该怎么处理？",
+      "expected_output": "Converts both the reviewed Script and the TTS copy to Hong Kong Traditional Chinese, keeps 不請自來 unchanged, uses stable forms including 海龜 and 一齊, and stops before synthesis with the exact file path if an OpenCC s2hk zero-difference check fails.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "试听中‘食返’读错，‘塞畀人’也读错；请在不改变原意的前提下修正，并说明哪些内容不应依赖全局发音词典逐字替换。",
+      "expected_output": "Records the observed misreadings, uses safe natural Traditional alternatives such as 食曬佢 and 推畀人, regenerates only affected TTS and MP3 files, and explains that idioms and fixed written expressions must remain standard rather than being globally converted by entries such as 是 to 係.",
+      "files": []
     }
   ]
 }

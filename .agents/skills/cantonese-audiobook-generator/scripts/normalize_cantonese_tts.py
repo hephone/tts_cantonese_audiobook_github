@@ -8,12 +8,24 @@ import re
 from collections import Counter
 from pathlib import Path
 
+from opencc import OpenCC
+
 
 DEFAULT_DICTIONARY = (
     Path(__file__).resolve().parent.parent
     / "references"
     / "cantonese-tts-pronunciations.tsv"
 )
+S2HK = OpenCC("s2hk")
+
+
+def validate_traditional_text(text: str, source_path: Path) -> None:
+    """Reject text that still contains characters convertible to Hong Kong Traditional."""
+    if S2HK.convert(text) != text:
+        raise ValueError(
+            f"{source_path}: contains characters that must be converted to "
+            "Traditional Chinese before synthesis"
+        )
 
 
 def read_dictionary(path: Path) -> dict[str, str]:
@@ -103,10 +115,12 @@ def main() -> int:
         replacements.update(read_dictionary(args.book_dictionary))
 
     source_text = input_path.read_text(encoding="utf-8")
+    validate_traditional_text(source_text, input_path)
     normalized_text, counts = normalize(source_text, replacements)
     normalized_text, slash_count = normalize_tts_punctuation(normalized_text)
     if "/" in normalized_text:
         raise ValueError("TTS text still contains '/', which edge-tts would read aloud")
+    validate_traditional_text(normalized_text, output_path)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     temporary_path = output_path.with_name(f".{output_path.name}.tmp")

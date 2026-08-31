@@ -52,6 +52,7 @@ Do not add opinions, delete substantive content, change the author's position, o
 Make the script natural to hear:
 
 - use Hong Kong Cantonese syntax and vocabulary
+- write the reviewed reading script in Hong Kong Traditional Chinese; after conversion, an OpenCC s2hk conversion must make no further changes
 - keep approximately 70% spoken Cantonese and 30% written expression
 - split long sentences and complex clauses
 - use `/` for a light pause only in the reading script when it helps editorial review; it is not a TTS character
@@ -60,9 +61,13 @@ Make the script natural to hear:
 
 Do not overuse `喎`, `啦`, `啫`, or `咯`.
 
+Keep idioms, fixed collocations, technical terms, names, book titles, quotations, and other established written expressions in their standard written form. Adapt the surrounding syntax when needed, but do not mechanically convert each character into colloquial Cantonese: retain 不請自來, not 唔請自來.
+
 ### 3. Review Cantonese quality
 
 Check Mandarin residue, Cantonese grammar, Hong Kong usage, and reading flow. Pay attention to words such as `因此`, `通过`, `进行`, `认为`, `此外`, `其中`, and `以及`, but replace them only when they sound unnatural in context.
+
+Check that the reading script is fully Hong Kong Traditional Chinese. A text is ready only when converting it with OpenCC s2hk produces no change. Treat a remaining convertible simplified character as a blocking issue, not as a cosmetic cleanup.
 
 Output only required changes:
 
@@ -86,6 +91,8 @@ Apply the accepted corrections and review again until no unresolved issue remain
 
 Keep the reviewed reading script unchanged. Before synthesis, create a separate TTS-only text that favors correct, stable pronunciation over uncommon written Cantonese characters.
 
+Use a global dictionary only for demonstrated pronunciation compatibility, never as a blanket Mandarin-to-Cantonese word converter. Broad entries such as 是 to 係 or 不是 to 唔係 can damage idioms and fixed written expressions. Make editorial wording choices in the reviewed script; use a book dictionary only for a repeatable, verified reading problem.
+
 For audiobook synthesis, prefer correct pronunciation over preserving a pronunciation-risky written character in the TTS copy.
 
 Check every chapter for:
@@ -101,6 +108,8 @@ Apply fixes in this order without changing meaning:
 2. Rewrite only the TTS copy of the phrase when a direct replacement is insufficient.
 3. If plain-text normalization cannot solve the pronunciation, record the unresolved term and ask before changing the TTS engine or migrating to an Azure Speech SDK workflow that supports pronunciation controls.
 
+When a sample reveals a reading error, record the source form, observed reading, safe replacement, and reason. Prefer natural Traditional Chinese that is stable for the voice: for example, 海龜, 一齊, 食曬佢, and 推畀人. Regenerate only the affected TTS copy and MP3 after the correction.
+
 Always apply the bundled [Cantonese TTS pronunciation dictionary](references/cantonese-tts-pronunciations.tsv), including the mandatory replacement `噉 → 咁`. Store book-specific additions in `TTS/pronunciation-dictionary.tsv`. Treat book-specific entries as overrides, apply longer source strings first, and do not cascade replacements.
 
 ### TTS punctuation safety
@@ -109,6 +118,7 @@ Microsoft's plain-text `edge-tts` CLI can pronounce a literal `/` as “斜線�
 
 - Preserve `/` in `Script/` if it is useful to show a light pause to a human editor.
 - During TTS normalization, rewrite every slash in the separate `TTS/*-edge.txt` copy to natural punctuation. Rewrite URL prefixes such as `https://` to a speakable label such as `網址：` before removing the remaining slashes.
+- Before and after normalization, verify the respective Script and TTS text with OpenCC s2hk; both must already be fully Hong Kong Traditional Chinese.
 - Before every synthesis, verify that the TTS-only file contains zero literal `/` characters. If it does not, stop and regenerate that TTS copy; do not synthesize first and hope the voice ignores it.
 - If a completed audio file is reported to read slashes aloud, regenerate only the affected TTS copies and chapter MP3 files, then re-run media verification. Keep `Script/` unchanged.
 
@@ -229,6 +239,7 @@ If the project already has an established output structure, keep it and document
 - If chapter structure is unclear, identify the most likely top-level chapter headings and ask for confirmation before conversion.
 - If `.venv` or `edge-tts` is missing, rebuild from `requirements-tts.txt`; do not install into a temporary directory.
 - If a dictionary row is malformed or contradictory, stop before synthesis and report its file and line number.
+- If a Script or TTS text still changes under OpenCC s2hk, stop before synthesis and report the exact file path; convert it to Hong Kong Traditional Chinese, then rerun normalization.
 - If a pronunciation cannot be fixed safely with synonymous text, preserve the reading script, record the unresolved term, and ask before changing engines or SDKs.
 - If synthesis fails, retry a limited number of times and retain completed audio.
 - If generated narration speaks a slash, treat it as a TTS-input validation failure: remove all literal slashes from the affected `TTS/*-edge.txt` files, regenerate only those chapter MP3s, and verify them again.
@@ -242,6 +253,7 @@ If the project already has an established output structure, keep it and document
 - Scripts preserve the author's content and position.
 - Cantonese QA uses the required correction format.
 - Reading scripts remain unchanged by TTS normalization; each chapter has a separate `TTS/*-edge.txt` generated from the bundled and book-level dictionaries.
+- Both reading scripts and TTS-only files pass the OpenCC s2hk zero-difference check; idioms and fixed written expressions have not been mechanically colloquialized.
 - TTS-only files contain no literal `/`; editorial slash pauses have been converted to punctuation before synthesis.
 - The mandatory `噉 → 咁` replacement was applied to every TTS input, and pronunciation replacements did not change meaning.
 - A sample was approved for a new configuration.
