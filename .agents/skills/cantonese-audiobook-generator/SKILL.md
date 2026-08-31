@@ -20,6 +20,7 @@ Turn written Mandarin non-fiction into a natural Hong Kong Cantonese knowledge-p
 Use the project's `.venv`. Do not install the tool into a temporary directory.
 Require `edge-tts` 7.2.8 in that environment and `ffprobe` for media verification.
 Store every book at `cantonese_audiobook_tts/<书名>/`; do not create audiobook outputs at the repository root.
+Do not invoke MMX, `mmx`, or any MMX account-backed text or speech service in this workflow. Adaptation and review are performed in the current Codex session; MP3 synthesis uses only the local `.venv` edge-tts client with the approved Microsoft voice.
 
 ## Workflow
 
@@ -39,6 +40,8 @@ Wait for confirmation before full conversion unless the user has already approve
 ### 2. Adapt the text into Hong Kong Cantonese narration
 
 Write as a Hong Kong Cantonese editor for a professional knowledge program.
+
+Do not delegate the adaptation or review to MMX. If a separate paid external text-generation service would be required, stop and ask the user rather than attempting authentication or spending account credit.
 
 Preserve:
 
