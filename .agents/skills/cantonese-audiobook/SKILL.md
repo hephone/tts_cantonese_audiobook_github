@@ -13,7 +13,7 @@ TTS 默认使用 Microsoft `edge-tts` 的香港粤语声音 `zh-HK-WanLungNeural
 
 ## 环境
 
-- 项目根目录：本仓库根目录（所有命令均从此处运行）
+- 项目根目录：当前仓库根目录（所有命令均从此处运行）
 - 虚拟环境：`.venv/`；依赖见 `requirements-tts.txt`
 - 输入 EPUB 放在 `books/`，生成内容放在 `cantonese_audiobook_tts/<书名>/`
 - 生成前确认：`.venv/bin/edge-tts --list-voices | grep 'zh-HK'` 和 `ffprobe -version`
